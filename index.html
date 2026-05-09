@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="優力好資訊 - 長照知識分享與資訊平台">
+    <title>優力好資訊</title>
+    <link rel="shortcut icon" href="http://ipmos.ngrok.app/files/License-2.png">
+    
+    <!-- 引入 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2D7D90;
+            --primary-light: #4AA3B5;
+            --primary-dark: #1D5A68;
+            --accent-color: #E8A54B;
+            --accent-light: #F5C882;
+            --facebook-color: #1877F2;
+            --text-dark: #2C3E50;
+            --text-light: #6B7C8A;
+            --bg-cream: #FDF8F3;
+            --bg-white: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(45, 125, 144, 0.12);
+            --shadow-hover: 0 8px 30px rgba(45, 125, 144, 0.2);
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-dark);
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* 背景裝飾 */
+        .bg-decoration { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
+        .bg-circle { position: absolute; border-radius: 50%; opacity: 0.08; }
+        .bg-circle-1 { width: 600px; height: 600px; background: var(--primary-color); top: -200px; right: -100px; }
+        .bg-circle-2 { width: 400px; height: 400px; background: var(--accent-color); bottom: -100px; left: -100px; }
+        .bg-circle-3 { width: 300px; height: 300px; background: var(--primary-light); top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        /* 頁首 */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+        .header-content {
+            max-width: 1400px; margin: 0 auto; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: white; }
+        .logo-icon {
+            width: 50px; height: 50px; background: var(--accent-color); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
+        }
+        .logo-text h1 { font-size: 1.4rem; font-weight: 700; }
+        .logo-text span { font-size: 0.85rem; opacity: 0.9; font-weight: 300; }
+        nav { display: flex; gap: 8px; }
+        nav a {
+            color: white; text-decoration: none; padding: 10px 20px; border-radius: 25px;
+            font-weight: 500; transition: var(--transition); font-size: 0.95rem;
+        }
+        nav a:hover { background: rgba(255,255,255,0.2); }
+        nav a.active { background: var(--accent-color); }
+        .mobile-menu-btn {
+            display: none; background: none; border: none; color: white;
+            font-size: 1.5rem; cursor: pointer; padding: 8px;
+        }
+
+        /* 主視覺區 */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 4rem 2rem; text-align: center; color: white;
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+        .hero-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; }
+        .hero h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .hero p { font-size: 1.2rem; opacity: 0.95; margin-bottom: 2rem; font-weight: 300; }
+        .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px;
+            border-radius: 30px; text-decoration: none; font-weight: 500;
+            transition: var(--transition); font-size: 1rem;
+        }
+        .btn-primary {
+            background: var(--accent-color); color: white;
+            box-shadow: 0 4px 15px rgba(232, 165, 75, 0.4);
+        }
+        .btn-primary:hover {
+            background: var(--accent-light); transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 165, 75, 0.5);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.15); color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.5); }
+        .btn-quiz {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn-quiz:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Facebook 社團區塊 */
+        .facebook-section {
+            background: linear-gradient(135deg, #1877F2 0%, #0d5bbd 100%);
+            padding: 3rem 2rem; text-align: center; color: white;
+            position: relative; overflow: hidden;
+        }
+        .facebook-section::before {
+            content: ''; position: absolute; top: -50%; right: -20%;
+            width: 400px; height: 400px; background: rgba(255,255,255,0.1); border-radius: 50%;
+        }
+        .facebook-section::after {
+            content: ''; position: absolute; bottom: -30%; left: -10%;
+            width: 300px; height: 300px; background: rgba(255,255,255,0.08); border-radius: 50%;
+        }
+        .facebook-content {
+            max-width: 900px; margin: 0 auto; position: relative; z-index: 1;
+            display: flex; align-items: center; justify-content: center; gap: 3rem; flex-wrap: wrap;
+        }
+        .facebook-info { flex: 1; min-width: 280px; text-align: left; }
+        .facebook-info h3 {
+            font-size: 1.8rem; font-weight: 700; margin-bottom: 0.8rem;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .facebook-info h3 svg { width: 40px; height: 40px; }
+        .facebook-info p { font-size: 1.1rem; opacity: 0.95; margin-bottom: 1.5rem; line-height: 1.7; }
+        .facebook-features { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .facebook-feature { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; opacity: 0.9; }
+        .facebook-feature svg { width: 20px; height: 20px; }
+        .btn-facebook {
+            display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px;
+            background: white; color: #1877F2; border-radius: 30px; text-decoration: none;
+            font-weight: 600; font-size: 1.1rem; transition: var(--transition);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .btn-facebook:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .btn-facebook svg { width: 24px; height: 24px; }
+        .facebook-preview {
+            background: white; border-radius: 16px; padding: 1.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); min-width: 300px; max-width: 350px;
+            text-align: left; color: var(--text-dark);
+        }
+        .facebook-preview-header {
+            display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;
+            padding-bottom: 1rem; border-bottom: 1px solid #e4e6eb;
+        }
+        .facebook-preview-icon {
+            width: 50px; height: 50px;
+            background: linear-gradient(135deg, #1877F2 0%, #0d5bbd 100%);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.5rem;
+        }
+        .facebook-preview-title h4 { font-size: 1rem; font-weight: 600; color: var(--text-dark); }
+        .facebook-preview-title span { font-size: 0.85rem; color: var(--text-light); }
+        .facebook-preview-stats { display: flex; gap: 1.5rem; margin-bottom: 1rem; }
+        .facebook-preview-stat { text-align: center; }
+        .facebook-preview-stat strong { display: block; font-size: 1.3rem; color: #1877F2; }
+        .facebook-preview-stat span { font-size: 0.8rem; color: var(--text-light); }
+        .facebook-preview-desc { font-size: 0.9rem; color: var(--text-light); line-height: 1.6; }
+
+        /* 主要內容 */
+        main { max-width: 1400px; margin: 0 auto; padding: 3rem 2rem; }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header h2 { font-size: 2rem; color: var(--primary-dark); margin-bottom: 0.5rem; }
+        .section-header p { color: var(--text-light); font-size: 1.1rem; }
+
+        /* 快速入口 */
+        .quick-access { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 4rem; }
+        .quick-card {
+            background: var(--bg-white); border-radius: var(--border-radius); padding: 2rem;
+            text-decoration: none; color: inherit; box-shadow: var(--shadow-soft);
+            transition: var(--transition); display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+        }
+        .quick-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+            transform: scaleX(0); transition: var(--transition);
+        }
+        .quick-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+        .quick-card:hover::before { transform: scaleX(1); }
+        .quick-card-icon {
+            width: 60px; height: 60px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px; margin-bottom: 1.5rem;
+        }
+        .quick-card-icon.forum { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .quick-card-icon.knowledge { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .quick-card-icon.resources   { background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%); }
+        .quick-card-icon.transcript  { background: linear-gradient(135deg, #2D7D90 0%, #4AA3B5 100%); }
+        .quick-card h3 { font-size: 1.3rem; margin-bottom: 0.8rem; color: var(--text-dark); }
+        .quick-card p { color: var(--text-light); font-size: 0.95rem; flex-grow: 1; margin-bottom: 1rem; }
+        .quick-card-link { color: var(--primary-color); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+        .quick-card-link svg { transition: var(--transition); }
+        .quick-card:hover .quick-card-link svg { transform: translateX(5px); }
+
+        /* 應用程式區 */
+        .apps-section {
+            background: var(--bg-white); border-radius: var(--border-radius);
+            padding: 2.5rem; margin-bottom: 4rem; box-shadow: var(--shadow-soft);
+        }
+        .apps-section h2 {
+            font-size: 1.5rem; color: var(--primary-dark); margin-bottom: 2rem;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .apps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.5rem; }
+        .app-item {
+            display: flex; flex-direction: column; align-items: center;
+            text-decoration: none; color: var(--text-dark); padding: 1.5rem 1rem;
+            border-radius: 16px; transition: var(--transition); background: var(--bg-cream);
+        }
+        .app-item:hover {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white; transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(45, 125, 144, 0.3);
+        }
+        .app-icon {
+            width: 64px; height: 64px; border-radius: 16px; margin-bottom: 1rem;
+            object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .app-item span { font-size: 0.9rem; font-weight: 500; text-align: center; }
+
+        /* 最新動態 */
+        .news-section { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+        .news-main {
+            background: var(--bg-white); border-radius: var(--border-radius);
+            padding: 2rem; box-shadow: var(--shadow-soft);
+        }
+        .news-main h2 {
+            font-size: 1.5rem; color: var(--primary-dark); margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .news-list { display: flex; flex-direction: column; gap: 1rem; }
+        .news-item {
+            display: flex; gap: 1rem; padding: 1rem; background: var(--bg-cream);
+            border-radius: 12px; text-decoration: none; color: inherit; transition: var(--transition);
+        }
+        .news-item:hover {
+            background: linear-gradient(135deg, rgba(45, 125, 144, 0.1) 0%, rgba(74, 163, 181, 0.1) 100%);
+            transform: translateX(5px);
+        }
+        .news-avatar {
+            width: 50px; height: 50px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 600; flex-shrink: 0;
+        }
+        .news-content h4 { font-size: 1rem; margin-bottom: 0.3rem; color: var(--text-dark); }
+        .news-content p { font-size: 0.85rem; color: var(--text-light); }
+        .news-meta { display: flex; gap: 1rem; margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-light); }
+
+        /* 側邊欄 */
+        .sidebar { display: flex; flex-direction: column; gap: 2rem; }
+        .sidebar-card {
+            background: var(--bg-white); border-radius: var(--border-radius);
+            padding: 1.5rem; box-shadow: var(--shadow-soft);
+        }
+        .sidebar-card h3 {
+            font-size: 1.2rem; color: var(--primary-dark); margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .stat-item { text-align: center; padding: 1rem; background: var(--bg-cream); border-radius: 12px; }
+        .stat-item strong { display: block; font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.3rem; }
+        .stat-item span { font-size: 0.85rem; color: var(--text-light); }
+        .hot-topics { display: flex; flex-direction: column; gap: 0.8rem; }
+        .hot-topic {
+            display: flex; align-items: center; gap: 10px; padding: 0.8rem;
+            background: var(--bg-cream); border-radius: 10px; text-decoration: none;
+            color: var(--text-dark); font-size: 0.9rem; transition: var(--transition);
+        }
+        .hot-topic:hover { background: var(--primary-color); color: white; }
+        .hot-topic-num {
+            width: 24px; height: 24px; background: var(--primary-color); color: white;
+            border-radius: 6px; display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 600;
+        }
+        .hot-topic:hover .hot-topic-num { background: white; color: var(--primary-color); }
+
+        /* 頁尾 */
+        footer {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #1a4a54 100%);
+            color: white; padding: 3rem 2rem 1.5rem; margin-top: 4rem;
+        }
+        .footer-content {
+            max-width: 1400px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem; margin-bottom: 2rem;
+        }
+        .footer-section h4 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--accent-light); }
+        .footer-section p, .footer-section a { color: rgba(255,255,255,0.8); font-size: 0.95rem; line-height: 1.8; }
+        .footer-section a { text-decoration: none; display: block; transition: var(--transition); }
+        .footer-section a:hover { color: var(--accent-color); padding-left: 5px; }
+        .footer-qrcode {
+            margin-top: 1rem; background: white; border-radius: 10px;
+            padding: 10px; display: inline-block; text-align: center;
+        }
+        .footer-qrcode img {
+            width: 100px; height: 100px; object-fit: contain; border-radius: 6px;
+        }
+        .footer-qrcode span {
+            display: block; color: var(--text-dark); font-size: 0.75rem;
+            margin-top: 5px; font-weight: 500;
+        }
+        .footer-bottom {
+            text-align: center; padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; opacity: 0.8;
+        }
+
+        /* 響應式 */
+        @media (max-width: 992px) {
+            .news-section { grid-template-columns: 1fr; }
+            .facebook-content { flex-direction: column; text-align: center; }
+            .facebook-info { text-align: center; }
+            .facebook-info h3 { justify-content: center; }
+            .facebook-features { justify-content: center; }
+        }
+        @media (max-width: 768px) {
+            .header-content { padding: 1rem; }
+            nav {
+                display: none; position: absolute; top: 100%; left: 0; right: 0;
+                background: var(--primary-dark); flex-direction: column; padding: 1rem; gap: 0;
+            }
+            nav.active { display: flex; }
+            nav a { padding: 12px 20px; border-radius: 8px; }
+            .mobile-menu-btn { display: block; }
+            .hero h2 { font-size: 1.8rem; }
+            .hero p { font-size: 1rem; }
+            .apps-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+            .app-item { padding: 1rem 0.5rem; }
+            .app-icon { width: 50px; height: 50px; }
+            .app-item span { font-size: 0.8rem; }
+            .facebook-preview { min-width: unset; width: 100%; }
+        }
+    </style>
+    <script src="/member_widget.js" defer></script>
+</head>
+<body>
+    <div class="bg-decoration">
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        <div class="bg-circle bg-circle-3"></div>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">🌿</div>
+                <div class="logo-text">
+                    <h1>優力好資訊</h1>
+                    <span>長照知識分享平台</span>
+                </div>
+            </a>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+            <nav id="mainNav">
+                <a href="index.html" class="active">首頁</a>
+                <a href="forum.php">討論區</a>
+                <a href="care-knowledge.php">知識庫</a>
+                <a href="quiz.html">學科測驗</a>
+                <a href="resources.php">資源中心</a>
+                <a href="guide.php">🛠 工具說明</a>
+                <a href="transcript.php">🎙️ 語音轉文字</a>
+                <a href="about.html">關於我們</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h2>關懷長照，分享知識</h2>
+            <p>這裡是照顧者與專業人士交流的園地，讓我們一起分享經驗、互相支持，為長照服務注入更多溫暖與力量</p>
+            <div class="hero-buttons">
+                <a href="forum.php" class="btn btn-primary"><span>💬</span> 進入討論區</a>
+                <a href="care-knowledge.php" class="btn btn-secondary"><span>📚</span> 瀏覽知識庫</a>
+                <a href="quiz.html" class="btn btn-quiz"><span>📝</span> 學科測驗</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facebook 社團區塊 -->
+    <section class="facebook-section">
+        <div class="facebook-content">
+            <div class="facebook-info">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    加入我們的 Facebook 社團
+                </h3>
+                <p>與更多照顧者即時互動交流，分享照護心得、提問求助、獲取最新長照資訊，建立互助支持網絡。</p>
+                <div class="facebook-features">
+                    <div class="facebook-feature">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        即時討論
+                    </div>
+                    <div class="facebook-feature">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        經驗分享
+                    </div>
+                    <div class="facebook-feature">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        互助支持
+                    </div>
+                </div>
+                <a href="https://www.facebook.com/groups/1817991231770115?locale=zh_TW" target="_blank" class="btn-facebook">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    前往 Facebook 社團
+                </a>
+            </div>
+            <div class="facebook-preview">
+                <div class="facebook-preview-header">
+                    <div class="facebook-preview-icon">👥</div>
+                    <div class="facebook-preview-title">
+                        <h4>優力好資訊社團</h4>
+                        <span>公開社團</span>
+                    </div>
+                </div>
+                <div class="facebook-preview-stats">
+                    <div class="facebook-preview-stat"><strong>1.2K+</strong><span>成員</span></div>
+                    <div class="facebook-preview-stat"><strong>50+</strong><span>每週貼文</span></div>
+                </div>
+                <p class="facebook-preview-desc">長照知識分享、照護經驗交流、互助支持的溫馨園地，歡迎所有照顧者加入！</p>
+            </div>
+        </div>
+    </section>
+
+    <main>
+        <section class="section-header">
+            <h2>探索平台功能</h2>
+            <p>豐富的資源與功能，滿足您的各種需求</p>
+        </section>
+
+        <div class="quick-access">
+            <a href="forum.php" class="quick-card">
+                <div class="quick-card-icon forum">💬</div>
+                <h3>互動討論區</h3>
+                <p>在這裡發表您的照護心得、提出問題、與其他照顧者交流經驗，建立互助的支持網絡。</p>
+                <span class="quick-card-link">進入討論區 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </a>
+            <a href="care-knowledge.php" class="quick-card">
+                <div class="quick-card-icon knowledge">📚</div>
+                <h3>長照知識庫</h3>
+                <p>精選照護技巧、醫療知識、政策法規等專業內容，幫助您提升照護能力與專業知識。</p>
+                <span class="quick-card-link">瀏覽知識庫 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </a>
+            <a href="resources.php" class="quick-card">
+                <div class="quick-card-icon resources">🔧</div>
+                <h3>資源中心</h3>
+                <p>提供實用工具、下載資源、外部連結等，讓您輕鬆取得所需的照護相關資源。</p>
+                <span class="quick-card-link">查看資源 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </a>
+            <a href="transcript.php" class="quick-card">
+                <div class="quick-card-icon transcript">🎙️</div>
+                <h3>語音轉文字</h3>
+                <p>上傳 MP3 等音訊檔案，AI 自動轉錄為繁體中文，同時產生 SRT 字幕格式與純文字格式。</p>
+                <span class="quick-card-link">前往轉錄 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+            </a>
+        </div>
+
+        <section class="apps-section">
+            <h2>🚀 常用工具與服務</h2>
+            <div class="apps-grid">
+                <a href="http://ipmos.ngrok.app/phpMyAdmin/index.php" class="app-item" target="_blank"><img src="./files/AppStore.png" alt="phpMyAdmin" class="app-icon"><span>phpMyAdmin</span></a>
+                <a href="https://ipmos.ngrok.app/wordpress/index.php" class="app-item" target="_blank"><img src="./files/wordpressed.png" alt="WordPress" class="app-icon"><span>WordPress</span></a>
+                <a href="https://play.kkbox.com/" class="app-item" target="_blank"><img src="./files/Music.png" alt="KKBOX" class="app-icon"><span>KKBOX</span></a>
+                <a href="https://ipm.synology.me/photo" class="app-item" target="_blank"><img src="./files/Photos.png" alt="相簿" class="app-icon"><span>相簿</span></a>
+                <a href="https://ipm.synology.me/video" class="app-item" target="_blank"><img src="./files/Videos.png" alt="影音" class="app-icon"><span>影音</span></a>
+                <a href="https://smartappscreator.com/tw/" class="app-item" target="_blank"><img src="./files/smartAppsCreator3.png" alt="SAC" class="app-icon"><span>SAC</span></a>
+
+                <a href="http://ipmos.ngrok.app/filemanager.php" class="app-item" target="_blank"><img src="./files/Downloads.png" alt="FTP管理" class="app-icon"><span>FTP管理</span></a>
+
+                <a href="https://cloud.google.com/text-to-speech/" class="app-item" target="_blank"><img src="./files/Transmission.png" alt="Google TTS" class="app-icon"><span>Google TTS</span></a>
+                <a href="https://ipm.synology.me/" class="app-item" target="_blank"><img src="./files/Settings.png" alt="DSM" class="app-icon"><span>DSM</span></a>
+                <a href="http://ipmos.ngrok.app/videoplay.html" class="app-item" target="_blank"><img src="./files/License-2.png" alt="憑證" class="app-icon"><span>憑證</span></a>
+                <a href="http://ai2.appinventor.mit.edu/?locale=zh_TW" class="app-item" target="_blank"><img src="./files/AppInventor.png" alt="App Inventor" class="app-icon"><span>App Inventor</span></a>
+                <a href="https://remotedesktop.google.com/access" class="app-item" target="_blank"><img src="./files/FaceTime.png" alt="遠端桌面" class="app-icon"><span>遠端桌面</span></a>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <div class="news-main">
+                <h2>📰 最新討論</h2>
+                <div class="news-list">
+                    <a href="forum.php" class="news-item">
+                        <div class="news-avatar">林</div>
+                        <div class="news-content">
+                            <h4>如何幫助長輩適應日間照護中心？</h4>
+                            <p>我的父親最近開始去日照中心，但總是很抗拒...</p>
+                            <div class="news-meta"><span>💬 12 回覆</span><span>👁️ 156 瀏覽</span><span>2小時前</span></div>
+                        </div>
+                    </a>
+                    <a href="forum.php" class="news-item">
+                        <div class="news-avatar">陳</div>
+                        <div class="news-content">
+                            <h4>分享：居家照護的實用小技巧</h4>
+                            <p>照顧臥床長輩三年的心得整理，希望對大家有幫助...</p>
+                            <div class="news-meta"><span>💬 28 回覆</span><span>👁️ 432 瀏覽</span><span>5小時前</span></div>
+                        </div>
+                    </a>
+                    <a href="forum.php" class="news-item">
+                        <div class="news-avatar">王</div>
+                        <div class="news-content">
+                            <h4>長照2.0補助申請經驗分享</h4>
+                            <p>最近剛完成申請，分享一下流程和需要準備的文件...</p>
+                            <div class="news-meta"><span>💬 35 回覆</span><span>👁️ 678 瀏覽</span><span>1天前</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <aside class="sidebar">
+                <div class="sidebar-card">
+                    <h3>📊 社群統計</h3>
+                    <div class="stat-grid">
+                        <div class="stat-item"><strong>1,234</strong><span>會員數</span></div>
+                        <div class="stat-item"><strong>567</strong><span>討論主題</span></div>
+                        <div class="stat-item"><strong>3,456</strong><span>回覆數</span></div>
+                        <div class="stat-item"><strong>89</strong><span>知識文章</span></div>
+                    </div>
+                </div>
+                <div class="sidebar-card">
+                    <h3>🔥 熱門話題</h3>
+                    <div class="hot-topics">
+                        <a href="forum.php" class="hot-topic"><span class="hot-topic-num">1</span>居家照護技巧分享</a>
+                        <a href="forum.php" class="hot-topic"><span class="hot-topic-num">2</span>長照補助申請指南</a>
+                        <a href="forum.php" class="hot-topic"><span class="hot-topic-num">3</span>照顧者心理調適</a>
+                        <a href="forum.php" class="hot-topic"><span class="hot-topic-num">4</span>失智症照護經驗</a>
+                    </div>
+                </div>
+            </aside>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>關於優力好資訊</h4>
+                <p>我們致力於建立一個溫暖的長照知識分享平台，讓照顧者能夠互相支持、共同成長。</p>
+            </div>
+            <div class="footer-section">
+                <h4>快速連結</h4>
+                <a href="forum.php">討論區</a>
+                <a href="care-knowledge.php">知識庫</a>
+                <a href="resources.php">資源中心</a>
+                <a href="transcript.php">語音轉文字</a>
+                <a href="about.html">關於我們</a>
+            </div>
+            <div class="footer-section">
+                <h4>外部資源</h4>
+                <a href="https://www.facebook.com/groups/1817991231770115?locale=zh_TW" target="_blank">Facebook 社團</a>
+                <a href="https://1966.gov.tw" target="_blank">1966長照專線</a>
+                <a href="ftp://ipmos.ngrok.app" target="_blank">FTP 伺服器</a>
+            </div>
+            <div class="footer-section">
+                <h4>聯絡我們</h4>
+                <p>📧 <a href="mailto:achir1015@gmail.com">achir1015@gmail.com</a></p>
+                <p>🌐 http://ipmos.ngrok.app</p>
+                <div class="footer-qrcode">
+                    <img src="./LINE長照學園.png" alt="LINE 長照學園 QR Code">
+                    <span>LINE 長照學園</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>© 2024 優力好資訊 版權所有</p></div>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        function toggleMenu() {
+            document.getElementById('mainNav').classList.toggle('active');
+        }
+        document.addEventListener('click', function(e) {
+            const nav = document.getElementById('mainNav');
+            const menuB
